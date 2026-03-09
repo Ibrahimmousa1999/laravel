@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', 'http://localhost:3001', 'https://luxxstore-frontend.onrender.com'],
+    'allowed_origins' => ['http://localhost:3000', 'http://localhost:3001', 'https://luxx-store-frontend.vercel.app/'],
 
     'allowed_origins_patterns' => [],
 
