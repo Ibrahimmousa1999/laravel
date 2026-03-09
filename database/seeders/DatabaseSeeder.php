@@ -2,22 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create Admin User
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@luxstore.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'phone' => '+1234567890',
-            'active' => true,
+        // Always create/update the fixed admin user
+        $this->call([
+            AdminSeeder::class,
         ]);
     }
 }
