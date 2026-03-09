@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        env('FRONTEND_URL'),
+        'https://luxx-store-frontend.vercel.app',
         'http://localhost:3000',
         'http://localhost:3001',
     ],
