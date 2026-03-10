@@ -72,6 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Admin Settings Routes (outside auth:sanctum to handle CORS properly)
 Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
+    // Admin User Management
+    Route::post('create-admin', [App\Http\Controllers\AdminController::class, 'createAdmin']);
+
     // Bulk Status Management
     Route::put('bulk-status/users', [App\Http\Controllers\AdminController::class, 'bulkStatusUsers']);
     Route::put('bulk-status/merchants', [App\Http\Controllers\AdminController::class, 'bulkStatusMerchants']);

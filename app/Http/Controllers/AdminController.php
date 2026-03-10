@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -168,5 +169,32 @@ class AdminController extends Controller
             'message' => 'All data reset successfully',
             'note' => 'Admin accounts preserved'
         ]);
+    }
+
+    // Create Admin User (Only accessible by existing admins)
+    public function createAdmin(Request $request)
+    {
+        $this->checkAdmin();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'role' => 'admin',
+            'active' => true,
+        ]);
+
+        return response()->json([
+            'message' => 'Admin user created successfully',
+            'user' => $user
+        ], 201);
     }
 }
