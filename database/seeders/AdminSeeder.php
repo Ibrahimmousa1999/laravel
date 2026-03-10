@@ -15,11 +15,11 @@ class AdminSeeder extends Seeder
     public function run()
     {
         User::updateOrCreate(
-            ['email' => env('ADMIN_EMAIL')],
+            ['email' => config('app.admin_email')],
             [
-                'name' => env('ADMIN_NAME'),
-                'password' => Hash::make(env('ADMIN_PASSWORD')),
-                'role' => env('ADMIN_ROLE', 'admin'),
+                'name' => config('app.admin_name'),
+                'password' => Hash::make(config('app.admin_password')),
+                'role' => config('app.admin_role', 'admin'),
                 'active' => true,
                 'phone' => null,
             ]
