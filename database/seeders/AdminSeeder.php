@@ -24,5 +24,11 @@ class AdminSeeder extends Seeder
                 'phone' => null,
             ]
         );
+        // Set password only if user is newly created
+        $user = User::firstWhere('email', config('app.admin_email'));
+        if (!$user->wasRecentlyCreated) {
+            $user->password = Hash::make(config('app.admin_password'));
+            $user->save();
+        }
     }
 }
