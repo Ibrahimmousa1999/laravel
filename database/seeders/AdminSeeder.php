@@ -3,18 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run()
     {
-        User::updateOrCreate(
+        // Try to find or create the admin
+        $user = User::firstOrCreate(
             ['email' => config('app.admin_email')],
             [
                 'name' => config('app.admin_name'),
@@ -24,11 +21,13 @@ class AdminSeeder extends Seeder
                 'phone' => null,
             ]
         );
-        // Set password only if user is newly created
-        $user = User::firstWhere('email', config('app.admin_email'));
-        if (!$user->wasRecentlyCreated) {
-            $user->password = Hash::make(config('app.admin_password'));
-            $user->save();
-        }
+
+        // Optional: update other fields if you want without touching the password
+        $user->update([
+            'name' => config('app.admin_name'),
+            'role' => config('app.admin_role', 'admin'),
+            'active' => true,
+            'phone' => null,
+        ]);
     }
 }
