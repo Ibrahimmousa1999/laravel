@@ -10,7 +10,7 @@ class AdminSeeder extends Seeder
 {
     public function run()
     {
-        // Try to find or create the admin
+        // Only create if not exists, and hash password once
         $user = User::firstOrCreate(
             ['email' => config('app.admin_email')],
             [
@@ -22,7 +22,7 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        // Optional: update other fields if you want without touching the password
+        // Optional: update other fields WITHOUT touching password
         $user->update([
             'name' => config('app.admin_name'),
             'role' => config('app.admin_role', 'admin'),
