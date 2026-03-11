@@ -79,6 +79,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard/admin/stats', [DashboardController::class, 'adminStats']);
     Route::get('/dashboard/merchant/stats', [DashboardController::class, 'merchantStats']);
     Route::get('/dashboard/user/stats', [DashboardController::class, 'userStats']);
+
+    // Product likes/favorites routes
+    Route::post('/products/{id}/like', [ProductController::class, 'like']);
+    Route::delete('/products/{id}/like', [ProductController::class, 'unlike']);
+    Route::get('/favorites', [ProductController::class, 'favorites']);
 });
 
 // Admin Settings Routes (outside auth:sanctum to handle CORS properly)

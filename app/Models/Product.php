@@ -58,4 +58,14 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(ProductLike::class);
+    }
+
+    public function likedBy()
+    {
+        return $this->belongsToMany(User::class, 'product_likes')->withTimestamps();
+    }
 }

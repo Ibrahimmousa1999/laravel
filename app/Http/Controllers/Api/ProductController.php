@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -274,5 +275,65 @@ class ProductController extends Controller
 
         $product->delete();
         return response()->json(['message' => 'Product deleted successfully']);
+    }
+
+    public function like(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $user = $request->user();
+
+        // Check if already liked
+        $existingLike = ProductLike::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($existingLike) {
+            return response()->json([
+                'message' => 'Product already liked',
+                'liked' => true
+            ]);
+        }
+
+        ProductLike::create([
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+        ]);
+
+        return response()->json([
+            'message' => 'Product liked successfully',
+            'liked' => true,
+            'likes_count' => $product->likes()->count()
+        ]);
+    }
+
+    public function unlike(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $user = $request->user();
+
+        $like = ProductLike::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($like) {
+            $like->delete();
+        }
+
+        return response()->json([
+            'message' => 'Product unliked successfully',
+            'liked' => false,
+            'likes_count' => $product->likes()->count()
+        ]);
+    }
+
+    public function favorites(Request $request)
+    {
+        $user = $request->user();
+
+        $favorites = Product::whereHas('likes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->with(['category', 'user'])->get();
+
+        return response()->json($favorites);
     }
 }
