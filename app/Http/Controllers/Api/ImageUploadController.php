@@ -22,8 +22,8 @@ class ImageUploadController extends Controller
             // Store in public/storage/products
             $path = $image->storeAs('products', $filename, 'public');
 
-            // Return the full URL using url() helper which works better with Laravel
-            $url = url('storage/' . $path);
+            // Use Storage::url() to generate the correct URL for the public disk
+            $url = Storage::disk('public')->url($path);
 
             return response()->json([
                 'success' => true,
